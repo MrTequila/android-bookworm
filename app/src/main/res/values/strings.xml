@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bookworm</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="add_book_title">Add book</string>
+    <string name="book_name_heading">Book name</string>
+    <string name="book_author">Author</string>
+</resources>

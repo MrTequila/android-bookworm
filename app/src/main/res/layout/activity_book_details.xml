@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mrtequila.bookworm.BookDetails">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="79dp"
+        android:layout_height="69dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/book"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <EditText
+        android:id="@+id/PagesNumberID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Pages"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/BookAuthorID"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/FinishDateID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Finish Date"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/StartDateID"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/StartDateID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Start Date"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/PagesNumberID"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/TimeReadID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Time read"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/FinishDateID"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/BookAuthorID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Book Author"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/BookTitleID"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/BookTitleID"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="none"
+        android:selectAllOnFocus="false"
+        android:text="Book Title"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:clickable="false"
+        tools:focusable="false" />
+
+    <EditText
+        android:id="@+id/editText7"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Time Read:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/TimeReadID"
+        app:layout_constraintTop_toBottomOf="@+id/editText12"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/editText12"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Finished:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/FinishDateID"
+        app:layout_constraintTop_toBottomOf="@+id/editText11"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/editText11"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Started:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/StartDateID"
+        app:layout_constraintTop_toBottomOf="@+id/editText10"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/editText10"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Pages:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/PagesNumberID"
+        app:layout_constraintTop_toBottomOf="@+id/editText9"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/editText9"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Author:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/BookAuthorID"
+        app:layout_constraintTop_toBottomOf="@+id/editText8"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/editText8"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        android:text="Title:"
+        android:background="@null"
+        app:layout_constraintRight_toLeftOf="@+id/BookTitleID"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_marginEnd="8dp" />
+
+</android.support.constraint.ConstraintLayout>
