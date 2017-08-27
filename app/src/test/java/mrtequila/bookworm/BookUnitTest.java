@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class BookUnitTest {
 
     @Test
-    public void bookToStringShouldReturnAppropriateString() {
+    public void bookToStringShouldReturnAppropriateString() throws Exception {
         Book tester = new Book();
 
         tester.setTitle("Title");

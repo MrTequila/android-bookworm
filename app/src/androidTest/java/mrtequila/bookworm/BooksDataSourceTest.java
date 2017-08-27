@@ -4,7 +4,6 @@ package mrtequila.bookworm;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
-import android.test.RenamingDelegatingContext;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +12,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
-import static android.support.test.InstrumentationRegistry.getContext;
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -27,15 +26,16 @@ public class BooksDataSourceTest extends AndroidTestCase {
     private BooksDataSource booksDataSource;
 
     @Before
-    public void setUp(){
-        //RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(),"test_");
+    public void setUp() throws Exception{
         booksDataSource = new BooksDataSource(InstrumentationRegistry.getTargetContext());
-        //booksDataSource = new BooksDataSource(context);
+
+        //deleting database first to be sure we create new one again.
+        booksDataSource.deleteDB(getTargetContext());
         booksDataSource.open();
     }
 
     @After
-    public void finish(){
+    public void tearDown() throws Exception{
         booksDataSource.close();
     }
 

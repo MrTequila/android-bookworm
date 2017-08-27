@@ -18,7 +18,7 @@ public class MySQLiteHelper  extends SQLiteOpenHelper{
     public static final String COLUMN_FINISHDATE = "finishDate";
     public static final String COLUMN_PAGENUMBER = "pageNumber";
 
-    private static final String DATABASE_NAME = "bookworm.db";
+    private static final String DATABASE_NAME = "test_bookworm.db";
     private static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_CREATE = "create table "
@@ -35,6 +35,7 @@ public class MySQLiteHelper  extends SQLiteOpenHelper{
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION );
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

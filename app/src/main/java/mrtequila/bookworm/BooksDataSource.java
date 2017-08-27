@@ -37,6 +37,10 @@ public class BooksDataSource {
         dbHelper.close();
     }
 
+    public void deleteDB(Context context) {
+        context.deleteDatabase(dbHelper.getDatabaseName());
+    }
+
     public Book createBook(String author, String title, String startDate,
                            String finishDate, int pageNumber) {
         ContentValues values = new ContentValues();
@@ -72,12 +76,12 @@ public class BooksDataSource {
         List<Book> books = new ArrayList<Book>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                                        allColumns,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null);
+                                                        allColumns,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Book book = cursorToBook(cursor);
@@ -94,12 +98,12 @@ public class BooksDataSource {
         ArrayList<Book> books = new ArrayList<Book>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                allColumns,
-                null,
-                null,
-                null,
-                null,
-                null);
+                                                        allColumns,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Book book = cursorToBook(cursor);
