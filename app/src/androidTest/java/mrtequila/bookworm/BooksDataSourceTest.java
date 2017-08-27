@@ -65,6 +65,39 @@ public class BooksDataSourceTest extends AndroidTestCase {
         assertEquals(851, books.get(0).getPageNumber());
     }
 
+    @Test
+    public void bookShouldBeDeleted() throws Exception{
+        String author1 = "Martin";
+        String title1 = "Game of Thrones";
+        String startDate1 = "2017-01-19";
+        String finishDate1 = "2017-02-03";
+        int pages1 = 851;
+
+        String author2 = "Jordan";
+        String title2 = "Wheel of Time";
+        String startDate2 = "2017-03-21";
+        String finishDate2 = "2017-05-07";
+        int pages2 = 629;
+
+        booksDataSource.createBook(author1, title1, startDate1, finishDate1, pages1);
+        booksDataSource.createBook(author2, title2, startDate2, finishDate2, pages2);
+        ArrayList<Book> books = booksDataSource.getAllBooksArray();
+
+        assertThat(books.size(), is(2));
+
+        assertTrue(books.get(0).getAuthor().equals("Martin"));
+        assertFalse(books.get(0).getAuthor().equals("Jordan"));
+        assertTrue(books.get(1).getAuthor().equals("Jordan"));
+        assertFalse(books.get(1).getAuthor().equals("Martin"));
+
+        booksDataSource.deleteBook(books.get(0));
+        books = booksDataSource.getAllBooksArray();
+
+        assertThat(books.size(), is(1));
+
+        assertTrue(books.get(0).getAuthor().equals("Jordan"));
+    }
+
 
 
 
