@@ -29,6 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private BooksDataSource dataSource;
+    private MySQLiteHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         startDate.setShowSoftInputOnFocus(false);
         hideKeyboard(this);
 
-        dataSource = new BooksDataSource(this);
+        helper = new MySQLiteHelper(this);
+        dataSource = new BooksDataSource(helper);
         dataSource.open();
 
         List<Book> values = dataSource.getAllBooks();

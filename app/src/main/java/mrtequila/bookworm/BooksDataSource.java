@@ -25,8 +25,8 @@ public class BooksDataSource {
                                     MySQLiteHelper.COLUMN_FINISHDATE,
                                     MySQLiteHelper.COLUMN_PAGENUMBER};
 
-    public BooksDataSource(Context context) {
-        dbHelper = new MySQLiteHelper(context);
+    public BooksDataSource(MySQLiteHelper helper) {
+        dbHelper = helper;
     }
 
     public void open() throws SQLException {
@@ -117,13 +117,13 @@ public class BooksDataSource {
     }
 
     private Book cursorToBook(Cursor cursor) {
-        Book book = new Book();
-        book.setId(cursor.getLong(0));
+        Book book = new Book(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),cursor.getString(4), cursor.getInt(5));
+        /*book.setId(cursor.getLong(0));
         book.setAuthor(cursor.getString(1));
         book.setTitle(cursor.getString(2));
         book.setStartDate(cursor.getString(3));
         book.setFinishDate(cursor.getString(4));
-        book.setPageNumber(cursor.getInt(5));
+        book.setPageNumber(cursor.getInt(5));*/
         return book;
     }
 }

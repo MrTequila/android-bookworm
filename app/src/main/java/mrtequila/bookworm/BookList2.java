@@ -11,13 +11,15 @@ public class BookList2 extends AppCompatActivity {
     private BooksDataSource dataSource;
     ListView listView;
     private static CustomAdapter adapter;
+    private MySQLiteHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list2);
 
-        dataSource = new BooksDataSource(this);
+        helper = new MySQLiteHelper(this);
+        dataSource = new BooksDataSource(helper);
         dataSource.open();
         listView = (ListView) findViewById(R.id.list);
 

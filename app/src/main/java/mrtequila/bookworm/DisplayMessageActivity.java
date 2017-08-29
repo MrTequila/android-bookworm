@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 public class DisplayMessageActivity extends AppCompatActivity {
     private BooksDataSource dataSource;
+    private MySQLiteHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +15,8 @@ public class DisplayMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_message);
 
         // Open db
-        dataSource = new BooksDataSource(this);
+        helper = new MySQLiteHelper(this);
+        dataSource = new BooksDataSource(helper);
         dataSource.open();
 
         // Get the Intent that started this activity and extract the string

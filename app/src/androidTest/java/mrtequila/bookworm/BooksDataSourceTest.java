@@ -24,10 +24,12 @@ import static org.junit.Assert.*;
 public class BooksDataSourceTest extends AndroidTestCase {
 
     private BooksDataSource booksDataSource;
+    private MySQLiteHelper helper;
 
     @Before
     public void setUp() throws Exception{
-        booksDataSource = new BooksDataSource(InstrumentationRegistry.getTargetContext());
+        helper = new MySQLiteHelper(InstrumentationRegistry.getTargetContext());
+        booksDataSource = new BooksDataSource(helper);
 
         //deleting database first to be sure we create new one again.
         booksDataSource.deleteDB(getTargetContext());
