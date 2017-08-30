@@ -32,7 +32,7 @@ public class BooksDataSourceTest extends AndroidTestCase {
         booksDataSource = new BooksDataSource(helper);
 
         //deleting database first to be sure we create new one again.
-        booksDataSource.deleteDB(getTargetContext());
+        booksDataSource.deleteDB();
         booksDataSource.open();
     }
 

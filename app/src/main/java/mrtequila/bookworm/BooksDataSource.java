@@ -30,100 +30,71 @@ public class BooksDataSource {
     }
 
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        dbHelper.open();
+       // database = dbHelper.getWritableDatabase();
     }
 
     public void close() {
         dbHelper.close();
     }
 
-    public void deleteDB(Context context) {
-        context.deleteDatabase(dbHelper.getDatabaseName());
+    public void deleteDB() {
+        dbHelper.deleteDB();
+        //context.deleteDatabase(dbHelper.getDatabaseName());
     }
 
     public Book createBook(String author, String title, String startDate,
                            String finishDate, int pageNumber) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
-        values.put(MySQLiteHelper.COLUMN_TITLE, title);
-        values.put(MySQLiteHelper.COLUMN_STARTDATE, startDate);
-        values.put(MySQLiteHelper.COLUMN_FINISHDATE, finishDate);
-        values.put(MySQLiteHelper.COLUMN_PAGENUMBER, pageNumber);
+
+        return dbHelper.createBook(author, title, startDate, finishDate, pageNumber);
+    }
+
+    /*public Book createBook2(ContentValues values) {
 
         long insertID = database.insert(MySQLiteHelper.TABLE_BOOKS, null, values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                                        allColumns,
-                                        MySQLiteHelper.COLUMN_ID + " = " + insertID,
-                                        null,
-                                        null,
-                                        null,
-                                        null );
+                allColumns,
+                MySQLiteHelper.COLUMN_ID + " = " + insertID,
+                null,
+                null,
+                null,
+                null );
         cursor.moveToFirst();
         Book newBook = cursorToBook(cursor);
         cursor.close();
         return newBook;
-    }
+    }*/
 
     public void deleteBook(Book book) {
+
         long id = book.getId();
-        System.out.println("Book deleted with id: " + id);
-        database.delete(MySQLiteHelper.TABLE_BOOKS,
-                        MySQLiteHelper.COLUMN_ID + " = " + id,
-                        null);
+        dbHelper.deleteBook(id);
     }
 
     public List<Book> getAllBooks() {
-        List<Book> books = new ArrayList<Book>();
+        List<Book> books;// = new ArrayList<Book>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                                                        allColumns,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Book book = cursorToBook(cursor);
-            books.add(book);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
+        books = dbHelper.getAllBooks();
         return books;
 
     }
 
     public ArrayList<Book> getAllBooksArray() {
-        ArrayList<Book> books = new ArrayList<Book>();
+        ArrayList<Book> books;// = new ArrayList<Book>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                                                        allColumns,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Book book = cursorToBook(cursor);
-            books.add(book);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
+        books = dbHelper.getAllBooksArray();
         return books;
 
     }
 
-    private Book cursorToBook(Cursor cursor) {
-        Book book = new Book(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),cursor.getString(4), cursor.getInt(5));
-        /*book.setId(cursor.getLong(0));
-        book.setAuthor(cursor.getString(1));
-        book.setTitle(cursor.getString(2));
-        book.setStartDate(cursor.getString(3));
-        book.setFinishDate(cursor.getString(4));
-        book.setPageNumber(cursor.getInt(5));*/
+   /* private Book cursorToBook(Cursor cursor) {
+        Book book = new Book(cursor.getLong(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getInt(5));
+
         return book;
-    }
+    }*/
 }

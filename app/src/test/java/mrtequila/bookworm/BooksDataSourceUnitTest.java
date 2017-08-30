@@ -1,5 +1,6 @@
 package mrtequila.bookworm;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.mock.MockContext;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -31,12 +33,16 @@ import static org.mockito.Mockito.*;
 public class BooksDataSourceUnitTest {
 
 
-    @Mock
+//    @Mock
     BooksDataSource booksDataSource;
+    @Mock MySQLiteHelper sqLiteHelper;
 
 
     @Before
     public void setUp(){
+        booksDataSource = new BooksDataSource(sqLiteHelper);
+        booksDataSource.open();
+
 
     }
 
@@ -60,14 +66,15 @@ public class BooksDataSourceUnitTest {
         Book mockBook = new Book(1, author, title, startDate, finishDate, pages);
         ArrayList<Book> mockBooks =new ArrayList<>();
         mockBooks.add(mockBook);
-        when(booksDataSource.createBook(author, title, startDate, finishDate, pages)).thenReturn(mockBook);
-        when(booksDataSource.getAllBooksArray()).thenReturn(mockBooks);
+        when(sqLiteHelper.createBook(author, title, startDate, finishDate, pages)).thenReturn(mockBook);
+        when(sqLiteHelper.getAllBooksArray()).thenReturn(mockBooks);
+
 
         booksDataSource.createBook(author, title, startDate, finishDate, pages);
         ArrayList<Book> books = booksDataSource.getAllBooksArray();
 
-        Mockito.verify(booksDataSource, times(1)).createBook(Matchers.matches(author),Matchers.matches(title), Matchers.matches(startDate), Matchers.matches(finishDate), Matchers.eq(pages));
-        Mockito.verify(booksDataSource, times(1)).getAllBooksArray();
+        Mockito.verify(sqLiteHelper, times(1)).createBook(Matchers.matches(author),Matchers.matches(title), Matchers.matches(startDate), Matchers.matches(finishDate), Matchers.eq(pages));
+        Mockito.verify(sqLiteHelper, times(1)).getAllBooksArray();
 
         assertThat(books.size(), is(1));
 
