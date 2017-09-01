@@ -148,6 +148,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openSideBar(View view) {
+        Intent intent = new Intent(this, Main2Activity.class);
+        startActivity(intent);
+    }
+
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 

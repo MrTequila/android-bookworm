@@ -5,4 +5,10 @@
     <string name="add_book_title">Add book</string>
     <string name="book_name_heading">Book name</string>
     <string name="book_author">Author</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

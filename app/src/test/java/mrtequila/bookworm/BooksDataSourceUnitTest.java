@@ -114,8 +114,6 @@ public class BooksDataSourceUnitTest {
         doNothing().when(sqLiteHelper).deleteBook(1);
 
 
-
-
         booksDataSource.createBook(AUTHOR_1, TITLE_1, START_DATE_1, FINISH_DATE_1, PAGES_1);
         booksDataSource.createBook(AUTHOR_2, TITLE_2, START_DATE_2, FINISH_DATE_2, PAGES_2);
         ArrayList<Book> books = booksDataSource.getAllBooksArray();
@@ -150,8 +148,5 @@ public class BooksDataSourceUnitTest {
         Mockito.verify(sqLiteHelper, times(1)).deleteBook(1);
 
     }
-
-
-
 
 }
