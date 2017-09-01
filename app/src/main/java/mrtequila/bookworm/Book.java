@@ -12,6 +12,15 @@ public class Book {
     private String finishDate;
     private int pageNumber;
 
+    public Book (long id, String author, String title, String startDate, String finishDate, int pageNumber){
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.pageNumber = pageNumber;
+    }
+
     public long getId() {
         return id;
     }

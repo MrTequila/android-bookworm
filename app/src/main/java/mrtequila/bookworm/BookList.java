@@ -9,13 +9,15 @@ import java.util.List;
 
 public class BookList extends ListActivity {
     private BooksDataSource dataSource;
+    private MySQLiteHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        dataSource = new BooksDataSource(this);
+        helper = new MySQLiteHelper(this);
+        dataSource = new BooksDataSource(helper);
         dataSource.open();
 
         List<Book> values = dataSource.getAllBooks();
