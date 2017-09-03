@@ -1,5 +1,6 @@
 package mrtequila.bookworm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,8 +28,9 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Add Book", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Add Book", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+                openAddBook(view);
             }
         });
 
@@ -81,6 +83,8 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_book_list) {
+            Intent intent = new Intent(this, BookList2.class);
+            startActivity(intent);
             // Handle the camera action
         } else if (id == R.id.nav_stats) {
         }
@@ -88,5 +92,15 @@ public class Main2Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /*public void openList2(View view) {
+        Intent intent = new Intent(this, BookList2.class);
+        startActivity(intent);
+    }*/
+
+    public void openAddBook(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
