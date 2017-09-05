@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -83,8 +85,13 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_book_list) {
-            Intent intent = new Intent(this, BookList2.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, BookList2.class);
+            //startActivity(intent);
+
+            Fragment fragment = new BookListFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             // Handle the camera action
         } else if (id == R.id.nav_stats) {
         }
@@ -93,11 +100,7 @@ public class Main2Activity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    /*public void openList2(View view) {
-        Intent intent = new Intent(this, BookList2.class);
-        startActivity(intent);
-    }*/
+    
 
     public void openAddBook(View view) {
         Intent intent = new Intent(this, MainActivity.class);
