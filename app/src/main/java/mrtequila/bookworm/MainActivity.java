@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(View view) throws ParseException {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
 
-
         EditText bookAuthor = (EditText) findViewById(R.id.bookAuthor);
         EditText bookTitle = (EditText) findViewById(R.id.bookTitle);
         EditText startDate = (EditText) findViewById(R.id.startDate);

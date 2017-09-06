@@ -44,6 +44,11 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Fragment fragment = new BookListFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     @Override
@@ -100,10 +105,14 @@ public class Main2Activity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    
+
 
     public void openAddBook(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Fragment fragment = new AddBookFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        //Intent intent = new Intent(this, MainActivity.class);
+        //startActivity(intent);
     }
 }
