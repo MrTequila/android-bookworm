@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/addBook"
+    android:id="@+id/addBookFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mrtequila.bookworm.MainActivity">
+    tools:context="mrtequila.bookworm.AddBookFragment">
 
     <EditText
         android:id="@+id/startDate"
@@ -93,7 +93,7 @@
         android:ems="10"
         android:hint="Finish date"
         android:inputType="date"
-        android:onClick="showDatePickerDialog"
+        android:onClick="showDatePickerDialogFragment"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         app:layout_constraintLeft_toLeftOf="parent"
