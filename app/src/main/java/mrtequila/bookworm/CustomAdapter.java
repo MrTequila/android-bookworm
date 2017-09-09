@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -25,6 +22,7 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
         TextView bookAuthor;
         TextView bookPages;
         ImageView cover;
+        RelativeLayout item;
     }
 
     public CustomAdapter(ArrayList<Book> books, Context context) {
@@ -50,13 +48,6 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
 
         mContext.startActivity(intent);
 
-
-        // TODO Add book details view after click
-        /*switch ( view.getId()){
-            case R.id.item_info:
-                Toast.makeText(mContext,"click !", Toast.LENGTH_SHORT).show();
-                break;
-        }*/
     }
 
     //private int lastPosition = -1;
@@ -66,8 +57,6 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
         Book book = getItem(position);
         ViewHolder viewHolder;
 
-        //final View result;
-
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -75,21 +64,20 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
             viewHolder.bookAuthor = (TextView) convertView.findViewById(R.id.author);
             viewHolder.bookName = (TextView) convertView.findViewById(R.id.name);
             viewHolder.bookPages = (TextView) convertView.findViewById(R.id.pages_number);
-            viewHolder.cover = (ImageView) convertView.findViewById(R.id.item_info);
+            viewHolder.cover = (ImageView) convertView.findViewById(R.id.book_cover);
+            viewHolder.item = (RelativeLayout) convertView.findViewById(R.id.item_info);
 
-            //result = convertView;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            //result = convertView;
         }
 
         viewHolder.bookAuthor.setText(book.getAuthor());
         viewHolder.bookName.setText(book.getTitle());
         viewHolder.bookPages.setText(Integer.toString(book.getPageNumber()));
-        viewHolder.cover.setOnClickListener(this);
-        viewHolder.cover.setTag(position);
+        //viewHolder.cover.setOnClickListener(this);
+        //viewHolder.cover.setTag(position);
 
         return convertView;
     }

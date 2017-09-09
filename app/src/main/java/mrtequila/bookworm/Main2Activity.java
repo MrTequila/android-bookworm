@@ -108,11 +108,7 @@ public class Main2Activity extends AppCompatActivity
 
 
     public void openAddBook(View view) {
-        Fragment fragment = new AddBookFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        //Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, AddBookActivity.class);
+        startActivity(intent);
     }
 }

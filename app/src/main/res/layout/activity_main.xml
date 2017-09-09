@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="29dp"
         android:layout_marginTop="8dp"
-        android:onClick="sendMessage"
+        android:onClick="addBook"
         android:text="@string/button_send"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pagesNo" />
