@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class Main2Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AddBookDialogFragment.AddBookDialogListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,8 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Add Book", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-                openAddBook(view);
+                //openAddBook(view);
+                showAddBookDialog();
             }
         });
 
@@ -110,5 +110,19 @@ public class Main2Activity extends AppCompatActivity
     public void openAddBook(View view) {
         Intent intent = new Intent(this, AddBookActivity.class);
         startActivity(intent);
+    }
+    public void showAddBookDialog() {
+        DialogFragment dialog = new AddBookDialogFragment();
+        dialog.show(getSupportFragmentManager(), "AddBookDialogFragment");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        openAddBook(getCurrentFocus().getRootView());
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }
