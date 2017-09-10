@@ -3,7 +3,6 @@ package mrtequila.bookworm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddBookDialogFragment.AddBookDialogListener {
@@ -90,9 +98,6 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_book_list) {
-            //Intent intent = new Intent(this, BookList2.class);
-            //startActivity(intent);
-
             Fragment fragment = new BookListFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -123,6 +128,35 @@ public class Main2Activity extends AppCompatActivity
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        EditText isbn = (EditText) dialog.getDialog().findViewById(R.id.isbn);
+        String url = "https://www.justbooks.co.uk/search/?isbn=";
+        String query = isbn.getText().toString();
+        String link = "&mode=isbn&st=sr&ac=qr";
 
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url + query + link, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                HTMLParser htmlParser = new HTMLParser(response);
+
+                Intent intent = new Intent(getApplicationContext(), AddBookActivity.class);
+                intent.putExtra("bookAuthor", htmlParser.getAuthor());
+                intent.putExtra("bookTitle", htmlParser.getTitle());
+
+                startActivity(intent);
+
+                System.out.println(htmlParser.getAuthor());
+                System.out.println(htmlParser.getTitle());
+                System.out.println(htmlParser.getCoverLink());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Didn't work !");
+            }
+        });
+
+        queue.add(stringRequest);
     }
 }

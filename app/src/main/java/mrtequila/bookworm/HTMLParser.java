@@ -17,6 +17,7 @@ public class HTMLParser extends AsyncTask<Void, Void, Void> {
     static String url = "https://www.justbooks.co.uk/search/?isbn=";
     static String query = String.format("%s", "9788375065305");
     static String link = String.format("%s", "&mode=isbn&st=sr&ac=qr");
+    Document htmlDocument;
 
 
     @Override
@@ -32,6 +33,32 @@ public class HTMLParser extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public HTMLParser(String htmlString){
+        parseHtmlString(htmlString);
+    }
+
+    public void parseHtmlString (String htmlString) {
+        htmlDocument = Jsoup.parse(htmlString);
+    }
+
+    public String getAuthor () {
+        Elements elements = htmlDocument.select("[itemprop = author]");
+        Element author = elements.first();
+        return author.text();
+    }
+
+    public String getTitle () {
+        Elements elementsTitle = htmlDocument.select("[itemprop = name]");
+        Element title = elementsTitle.first();
+        return title.text();
+    }
+
+    public String getCoverLink () {
+        Element elementImg = htmlDocument.getElementById("coverImage");
+        Elements elementsImg = elementImg.getElementsByAttribute("src");
+        return elementsImg.first().attr("src");
     }
 
     public static void main(String[] args) {

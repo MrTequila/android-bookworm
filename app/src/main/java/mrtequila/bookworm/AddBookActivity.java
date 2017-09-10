@@ -31,6 +31,15 @@ public class AddBookActivity extends AppCompatActivity {
         startDate.setShowSoftInputOnFocus(false);
         hideKeyboard(this);
 
+        Intent intent = getIntent();
+        String author = intent.getStringExtra("bookAuthor");
+        String title = intent.getStringExtra("bookTitle");
+
+        EditText bookAuthor = (EditText) findViewById(R.id.bookAuthor);
+        EditText bookTitle = (EditText) findViewById(R.id.bookTitle);
+        bookAuthor.setText(author);
+        bookTitle.setText(title);
+
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
         dataSource.open();
@@ -62,14 +71,14 @@ public class AddBookActivity extends AppCompatActivity {
         EditText finishDate = (EditText) findViewById(R.id.finishDate);
         EditText pagesNumber = (EditText) findViewById(R.id.pagesNo);
 
-        String strBoookAuthor = bookAuthor.getText().toString();
-        String strBoookTitle = bookTitle.getText().toString();
+        String strBookAuthor = bookAuthor.getText().toString();
+        String strBookTitle = bookTitle.getText().toString();
         String strStartDate = startDate.getText().toString();
         String strFinishDate =  finishDate.getText().toString();
         String strPagesNumber = pagesNumber.getText().toString();
 
-        intent.putExtra("bookAuthor", strBoookAuthor);
-        intent.putExtra("bookTitle", strBoookTitle);
+        intent.putExtra("bookAuthor", strBookAuthor);
+        intent.putExtra("bookTitle", strBookTitle);
         intent.putExtra("startDate", strStartDate);
         intent.putExtra("finishDate", strFinishDate);
         intent.putExtra("pagesNumber", strPagesNumber);
@@ -98,12 +107,12 @@ public class AddBookActivity extends AppCompatActivity {
         }
 
 
-        if (TextUtils.isEmpty(strBoookAuthor)) {
+        if (TextUtils.isEmpty(strBookAuthor)) {
             CharSequence text = "Add Book Author !";
             bookAuthor.setError(text);
             Toast.makeText(context, text, duration).show();
         }
-        if (TextUtils.isEmpty(strBoookTitle)) {
+        if (TextUtils.isEmpty(strBookTitle)) {
             CharSequence text = "Add Book Title !";
             bookTitle.setError(text);
             Toast.makeText(context, text, duration).show();
@@ -124,8 +133,8 @@ public class AddBookActivity extends AppCompatActivity {
             Toast.makeText(context, text, duration).show();
         }
 
-        if (!TextUtils.isEmpty(strBoookAuthor)
-                && !TextUtils.isEmpty(strBoookTitle)
+        if (!TextUtils.isEmpty(strBookAuthor)
+                && !TextUtils.isEmpty(strBookTitle)
                 && !TextUtils.isEmpty(strStartDate)
                 && !TextUtils.isEmpty(strFinishDate)
                 && !TextUtils.isEmpty(strPagesNumber)
@@ -136,7 +145,7 @@ public class AddBookActivity extends AppCompatActivity {
             dataSource = new BooksDataSource(helper);
             dataSource.open();
 
-            dataSource.createBook(strBoookAuthor, strBoookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+            dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
 
             startActivity(intent);
         }
