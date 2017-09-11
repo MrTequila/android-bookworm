@@ -72,4 +72,5 @@ public class BookDetails extends AppCompatActivity {
         timeRead.setText(readingDuration);
 
     }
+
 }

@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -128,35 +129,43 @@ public class Main2Activity extends AppCompatActivity
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-        RequestQueue queue = Volley.newRequestQueue(this);
         EditText isbn = (EditText) dialog.getDialog().findViewById(R.id.isbn);
-        String url = "https://www.justbooks.co.uk/search/?isbn=";
         String query = isbn.getText().toString();
-        String link = "&mode=isbn&st=sr&ac=qr";
+         if(TextUtils.isEmpty(query)) {
+             isbn.setError("Add ISBN number to search !");
+         } else {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url + query + link, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                HTMLParser htmlParser = new HTMLParser(response);
+             RequestQueue queue = Volley.newRequestQueue(this);
 
-                Intent intent = new Intent(getApplicationContext(), AddBookActivity.class);
-                intent.putExtra("bookAuthor", htmlParser.getAuthor());
-                intent.putExtra("bookTitle", htmlParser.getTitle());
+             String url = "https://www.justbooks.co.uk/search/?isbn=";
+             String link = "&mode=isbn&st=sr&ac=qr";
 
-                startActivity(intent);
 
-                System.out.println(htmlParser.getAuthor());
-                System.out.println(htmlParser.getTitle());
-                System.out.println(htmlParser.getCoverLink());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("Didn't work !");
-            }
-        });
+             StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                     url + query + link, new Response.Listener<String>() {
+                 @Override
+                 public void onResponse(String response) {
 
-        queue.add(stringRequest);
+                     HTMLParser htmlParser = new HTMLParser(response);
+
+                     Intent intent = new Intent(getApplicationContext(), AddBookActivity.class);
+                     intent.putExtra("bookAuthor", htmlParser.getAuthor());
+                     intent.putExtra("bookTitle", htmlParser.getTitle());
+
+                     startActivity(intent);
+
+                     System.out.println(htmlParser.getAuthor());
+                     System.out.println(htmlParser.getTitle());
+                     System.out.println(htmlParser.getCoverLink());
+                 }
+             }, new Response.ErrorListener() {
+                 @Override
+                 public void onErrorResponse(VolleyError error) {
+                     System.out.println("Didn't work !");
+                 }
+             });
+
+             queue.add(stringRequest);
+         }
     }
 }
