@@ -37,6 +37,11 @@ public class BooksDataSource {
         return dbHelper.createBook(author, title, startDate, finishDate, pageNumber);
     }
 
+    public Book updateBook(long id, String author, String title, String startDate,
+                           String finishDate, int pageNumber){
+        return dbHelper.updateBook(id, author, title, startDate, finishDate, pageNumber);
+    }
+
     public void deleteBook(Book book) {
 
         long id = book.getId();

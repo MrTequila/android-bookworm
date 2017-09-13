@@ -49,6 +49,7 @@ public class BookListFragment extends ListFragment {
         intent.putExtra("startDate", book.getStartDate());
         intent.putExtra("finishDate", book.getFinishDate());
         intent.putExtra("pagesNumber", Integer.toString(book.getPageNumber()));
+        intent.putExtra("id", book.getId());
 
         mContext.startActivity(intent);
     }

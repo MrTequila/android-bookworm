@@ -22,29 +22,42 @@ import java.util.List;
 public class AddBookActivity extends AppCompatActivity {
     private BooksDataSource dataSource;
     private MySQLiteHelper helper;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
+
+        EditText bookAuthor = (EditText) findViewById(R.id.bookAuthor);
+        EditText bookTitle = (EditText) findViewById(R.id.bookTitle);
+        EditText finishDate = (EditText) findViewById(R.id.finishDate);
+        EditText pagesNumber = (EditText) findViewById(R.id.pagesNo);
         EditText startDate = (EditText) findViewById(R.id.startDate);
+
         startDate.setShowSoftInputOnFocus(false);
         hideKeyboard(this);
 
         Intent intent = getIntent();
         String author = intent.getStringExtra("bookAuthor");
         String title = intent.getStringExtra("bookTitle");
+        String start = intent.getStringExtra("startDate");
+        String finish = intent.getStringExtra("finishDate");
+        String pages = intent.getStringExtra("pagesNumber");
+        id = intent.getLongExtra("id", 0);
 
-        EditText bookAuthor = (EditText) findViewById(R.id.bookAuthor);
-        EditText bookTitle = (EditText) findViewById(R.id.bookTitle);
+
         bookAuthor.setText(author);
         bookTitle.setText(title);
+        finishDate.setText(finish);
+        startDate.setText(start);
+        pagesNumber.setText(pages);
 
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
         dataSource.open();
 
-        List<Book> values = dataSource.getAllBooks();
+        //List<Book> values = dataSource.getAllBooks();
 
 
     }
@@ -61,7 +74,7 @@ public class AddBookActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    /** Called when the user taps Send button */
+    /** Called when the user taps add button */
     public void addBook(View view) throws ParseException {
         Intent intent = new Intent(this, Main2Activity.class);
 
@@ -144,8 +157,12 @@ public class AddBookActivity extends AppCompatActivity {
             helper = new MySQLiteHelper(this);
             dataSource = new BooksDataSource(helper);
             dataSource.open();
+            if (id==0){
+                dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+            } else {
+                dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+            }
 
-            dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
 
             startActivity(intent);
         }

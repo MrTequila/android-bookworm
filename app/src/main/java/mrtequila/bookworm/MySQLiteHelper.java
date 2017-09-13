@@ -97,6 +97,28 @@ public class MySQLiteHelper  extends SQLiteOpenHelper{
         return newBook;
     }
 
+    public Book updateBook(long id, String author, String title, String startDate,
+                           String finishDate, int pageNumber){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_AUTHOR, author);
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_STARTDATE, startDate);
+        values.put(COLUMN_FINISHDATE, finishDate);
+        values.put(COLUMN_PAGENUMBER, pageNumber);
+
+        database.update(TABLE_BOOKS, values, COLUMN_ID + "=" + id, null);
+
+        Cursor cursor = database.query(TABLE_BOOKS, allColumns,
+                COLUMN_ID + " = " + id, null, null, null, null);
+        cursor.moveToFirst();
+        Book book = cursorToBook(cursor);
+        cursor.close();
+
+        return book;
+
+
+    }
+
     public List<Book> getAllBooks(){
         List<Book> books = new ArrayList<Book>();
 
