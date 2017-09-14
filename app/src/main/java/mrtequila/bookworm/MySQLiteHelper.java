@@ -115,8 +115,16 @@ public class MySQLiteHelper  extends SQLiteOpenHelper{
         cursor.close();
 
         return book;
+    }
 
+    public Book getBook(long id) {
+        Cursor cursor = database.query(TABLE_BOOKS, allColumns,
+                COLUMN_ID + " = " + id, null, null, null, null);
+        cursor.moveToFirst();
+        Book book = cursorToBook(cursor);
+        cursor.close();
 
+        return book;
     }
 
     public List<Book> getAllBooks(){

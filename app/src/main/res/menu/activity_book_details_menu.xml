@@ -6,4 +6,9 @@
         android:orderInCategory="100"
         android:title="Edit Book"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_book"
+        android:orderInCategory="100"
+        android:title="Delete Book"
+        app:showAsAction="never" />
 </menu>

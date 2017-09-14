@@ -1,6 +1,9 @@
 package mrtequila.bookworm;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -90,10 +93,10 @@ public class BookDetails extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int MenuId = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_edit_book) {
+        if (MenuId == R.id.action_edit_book) {
             Intent intent = new Intent(getApplicationContext(), AddBookActivity.class);
 
             TextView bookAuthor = (TextView) findViewById(R.id.BookAuthorID);
@@ -113,13 +116,42 @@ public class BookDetails extends AppCompatActivity {
             intent.putExtra("startDate", strStartDate);
             intent.putExtra("finishDate", strFinishDate);
             intent.putExtra("pagesNumber", strPagesNumber);
-            intent.putExtra("id", this.id);
+            intent.putExtra("id", id);
 
             startActivity(intent);
 
         }
 
+        if (MenuId == R.id.action_delete_book) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure ?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+                            MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(getApplicationContext());
+                            BooksDataSource source = new BooksDataSource(mySQLiteHelper);
+                            source.open();
+                            Book bookToDelete =  source.getBook(id);
+                            source.deleteBook(bookToDelete);
+                            source.close();
+
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.show();
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

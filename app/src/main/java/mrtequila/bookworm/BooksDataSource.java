@@ -64,4 +64,8 @@ public class BooksDataSource {
 
     }
 
+    public Book getBook(long id){
+        return dbHelper.getBook(id);
+    }
+
 }
