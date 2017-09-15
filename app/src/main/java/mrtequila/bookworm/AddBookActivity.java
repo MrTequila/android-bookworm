@@ -1,9 +1,12 @@
 package mrtequila.bookworm;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -23,6 +26,7 @@ public class AddBookActivity extends AppCompatActivity {
     private BooksDataSource dataSource;
     private MySQLiteHelper helper;
     long id;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +189,26 @@ public class AddBookActivity extends AppCompatActivity {
         newFragment.setTargetFragment(newFragment, 10);
         newFragment.show(getSupportFragmentManager(), "datePicker");
 
+    }
+
+    public void addImageDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                        }
+                    }
+                })
+                .setNegativeButton("From Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
     }
 
     public static void hideKeyboard(Activity activity) {
