@@ -5,17 +5,25 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -161,10 +169,30 @@ public class AddBookActivity extends AppCompatActivity {
             helper = new MySQLiteHelper(this);
             dataSource = new BooksDataSource(helper);
             dataSource.open();
+            Book book;
             if (id==0){
-                dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+                book = dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
             } else {
-                dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+                book = dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+            }
+
+            File tempCover = null;
+            File finalCover = null;
+            String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + book.getId() + ".jpg";
+            //tempCover = File.createTempFile("temp", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+            tempCover = new File(mCurrentPhotoPath);
+            //finalCover = File.createTempFile("__"+Long.toString(book.getId()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+            finalCover = new File(finalCoverDir);
+            //File finalCover = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + book.getId() + ".jpg" );
+            
+            FileCopy copier = new FileCopy();
+            try {
+                System.out.println("*********************************************************");
+                System.out.println("tempCover" + tempCover.toString());
+                System.out.println("finalCover" + finalCover.toString());
+                copier.copyFile(tempCover, finalCover);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
 
@@ -198,7 +226,22 @@ public class AddBookActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                            // Create the File where the photo should go
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+
+                            }
+                            // Continue only if the File was successfully created
+                            if (photoFile != null) {
+                                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                        "com.example.android.fileprovider",
+                                        photoFile);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                            }
                         }
                     }
                 })
@@ -209,6 +252,39 @@ public class AddBookActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
+    }
+
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        //String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                "temp",  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++" + mCurrentPhotoPath);
+        return image;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+           // Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
+            if (coverImage != null) {
+                //coverImage.setImageBitmap(imageBitmap);
+                coverImage.setImageURI(Uri.parse(mCurrentPhotoPath));
+            }
+        }
     }
 
     public static void hideKeyboard(Activity activity) {

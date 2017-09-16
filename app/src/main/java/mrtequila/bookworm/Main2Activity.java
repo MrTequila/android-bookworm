@@ -36,6 +36,7 @@ public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddBookDialogFragment.AddBookDialogListener {
 
     final static int  MY_REQUEST_CODE = 100;
+    final static int  MY_REQUEST_CODE_EXT_STORAGE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,12 @@ public class Main2Activity extends AppCompatActivity
 
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
                         MY_REQUEST_CODE);
+            }
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_REQUEST_CODE_EXT_STORAGE);
             }
         }
 
@@ -85,8 +92,15 @@ public class Main2Activity extends AppCompatActivity
             }
             else {
                 // Your app will not have this permission. Turn off all functions
-                // that require this permission or it will force close like your
-                // original question
+                // that require this permission or it will force close
+            }
+        }
+        if (requestCode == MY_REQUEST_CODE_EXT_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Granted
+            }
+            else {
+                // Like above
             }
         }
     }

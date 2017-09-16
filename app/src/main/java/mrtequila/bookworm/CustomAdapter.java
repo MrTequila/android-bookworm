@@ -2,6 +2,8 @@ package mrtequila.bookworm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.R.attr.id;
 
 public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickListener {
 
@@ -78,6 +82,9 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
         viewHolder.bookPages.setText(Integer.toString(book.getPageNumber()));
         //viewHolder.cover.setOnClickListener(this);
         //viewHolder.cover.setTag(position);
+
+        //String finalCoverDir = "/storage/emulated/0/Android/data/mrtequila.bookworm/files/Pictures" + id + ".jpg";
+        //viewHolder.cover.setImageURI(Uri.parse(finalCoverDir));
 
         return convertView;
     }

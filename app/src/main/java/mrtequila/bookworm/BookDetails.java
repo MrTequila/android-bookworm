@@ -3,14 +3,19 @@ package mrtequila.bookworm;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,7 +83,17 @@ public class BookDetails extends AppCompatActivity {
         finishDate.setText(finish);
         pagesNumber.setText(pages);
         timeRead.setText(readingDuration);
+        File finalCover = null;
+        String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + id + ".jpg";
 
+        finalCover = new File(finalCoverDir);
+        //finalCover = File.createTempFile("__"+Long.toString(id) , ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+        ImageView coverImage = (ImageView) findViewById(R.id.imageView);
+        if (coverImage != null) {
+            //coverImage.setImageBitmap(imageBitmap);
+            coverImage.setImageURI(Uri.parse(finalCover.toString()));
+
+        }
     }
 
     @Override
@@ -117,6 +132,7 @@ public class BookDetails extends AppCompatActivity {
             intent.putExtra("finishDate", strFinishDate);
             intent.putExtra("pagesNumber", strPagesNumber);
             intent.putExtra("id", id);
+
 
             startActivity(intent);
 
