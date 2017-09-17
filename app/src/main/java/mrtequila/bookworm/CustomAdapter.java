@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static android.R.attr.id;
@@ -83,9 +84,11 @@ public class CustomAdapter extends ArrayAdapter<Book> implements View.OnClickLis
         //viewHolder.cover.setOnClickListener(this);
         //viewHolder.cover.setTag(position);
 
-        //String finalCoverDir = "/storage/emulated/0/Android/data/mrtequila.bookworm/files/Pictures" + id + ".jpg";
-        //viewHolder.cover.setImageURI(Uri.parse(finalCoverDir));
-
+        String finalCoverDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + book.getId() + ".jpg";
+        File coverImgFile = new File(finalCoverDir);
+        if (coverImgFile.exists()) {
+            viewHolder.cover.setImageURI(Uri.parse(finalCoverDir));
+        }
         return convertView;
     }
 }

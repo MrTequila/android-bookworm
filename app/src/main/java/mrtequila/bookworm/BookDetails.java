@@ -81,18 +81,25 @@ public class BookDetails extends AppCompatActivity {
         bookTitle.setText(title);
         startDate.setText(start);
         finishDate.setText(finish);
-        pagesNumber.setText(pages);
-        timeRead.setText(readingDuration);
-        File finalCover = null;
+        pagesNumber.setText(pages + " pages");
+        if (readingDurationDays > 1){
+            timeRead.setText(readingDuration + " days");
+        } else {
+            timeRead.setText(readingDuration + " day");
+        }
+
+        File finalCover;
         String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + id + ".jpg";
 
         finalCover = new File(finalCoverDir);
         //finalCover = File.createTempFile("__"+Long.toString(id) , ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
         ImageView coverImage = (ImageView) findViewById(R.id.imageView);
-        if (coverImage != null) {
-            //coverImage.setImageBitmap(imageBitmap);
-            coverImage.setImageURI(Uri.parse(finalCover.toString()));
+        if (finalCover.exists()) {
+            if (coverImage != null) {
+                //coverImage.setImageBitmap(imageBitmap);
+                coverImage.setImageURI(Uri.parse(finalCover.toString()));
 
+            }
         }
     }
 

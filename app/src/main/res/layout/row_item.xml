@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_info"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="90dp"
     android:clickable="false"
     android:orientation="vertical"
     android:padding="10dp">
@@ -11,6 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/book_cover"
         android:text="BookName"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -23,15 +26,18 @@
         android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/book_cover"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/book_cover"
         android:text="Author"
         android:textColor="@android:color/black" />
 
     <ImageView
         android:id="@+id/book_cover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/book" />
@@ -41,14 +47,19 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="33dp">
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="10dp">
 
         <TextView
             android:id="@+id/pages_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/linearLayout2"
+            android:layout_marginEnd="19dp"
+            android:layout_toStartOf="@+id/pages_number"
+            android:layout_weight="1"
             android:text="Pages: "
             android:textColor="@android:color/black"
             android:textStyle="bold" />
@@ -57,11 +68,14 @@
             android:id="@+id/pages_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/linearLayout2"
+            android:layout_marginBottom="-5dp"
+            android:layout_toStartOf="@+id/linearLayout2"
+            android:layout_weight="1"
             android:text="Number"
             android:textAppearance="?android:attr/textAppearanceButton"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
-
     </LinearLayout>
 
 </RelativeLayout>
