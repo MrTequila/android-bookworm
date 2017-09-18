@@ -32,7 +32,7 @@
         android:id="@+id/startDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="Start Date"
         android:ems="10"
         android:hint="Start Date"
@@ -40,8 +40,8 @@
         android:onClick="showDatePickerDialog"
         android:selectAllOnFocus="false"
         app:layout_constraintTop_toBottomOf="@+id/bookAuthor"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bookTitle" />
 
     <EditText
         android:id="@+id/bookAuthor"
@@ -50,21 +50,21 @@
         android:ems="10"
         android:hint="@string/book_author"
         android:inputType="textPersonName"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/bookTitle"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bookTitle" />
 
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="74dp"
-        android:layout_marginTop="52dp"
         android:onClick="addBook"
         android:text="Add"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pagesNo" />
+        app:layout_constraintLeft_toRightOf="@+id/pagesNo"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintTop_toTopOf="@+id/pagesNo"
+        android:layout_marginTop="0dp" />
 
     <EditText
         android:id="@+id/bookTitle"
@@ -75,15 +75,15 @@
         android:inputType="textPersonName"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toRightOf="@+id/book_cover"
+        android:layout_marginLeft="24dp" />
 
     <EditText
         android:id="@+id/finishDate"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:allowUndo="false"
         android:contentDescription="Finish date"
         android:ems="10"
@@ -94,21 +94,21 @@
         android:singleLine="false"
         app:layout_constraintTop_toBottomOf="@+id/startDate"
         tools:inputType="none"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bookTitle" />
 
     <EditText
         android:id="@+id/pagesNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="Pages Number"
         android:ems="10"
         android:hint="Pages Number"
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@+id/finishDate"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/bookTitle" />
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

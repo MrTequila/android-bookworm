@@ -65,6 +65,18 @@ public class AddBookActivity extends AppCompatActivity {
         startDate.setText(start);
         pagesNumber.setText(pages);
 
+        File finalCover;
+        String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + id + ".jpg";
+
+        finalCover = new File(finalCoverDir);
+        ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
+        if (finalCover.exists()) {
+            if (coverImage != null) {
+                coverImage.setImageURI(Uri.parse(finalCover.toString()));
+
+            }
+        }
+
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
         dataSource.open();
@@ -173,28 +185,31 @@ public class AddBookActivity extends AppCompatActivity {
             if (id==0){
                 book = dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
             } else {
-                book = dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+                int bookPages = dataSource.getBook(id).getPageNumber();
+                book = dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, bookPages);
             }
 
             File tempCover = null;
             File finalCover = null;
             String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + book.getId() + ".jpg";
             //tempCover = File.createTempFile("temp", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-            tempCover = new File(mCurrentPhotoPath);
-            //finalCover = File.createTempFile("__"+Long.toString(book.getId()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-            finalCover = new File(finalCoverDir);
-            //File finalCover = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + book.getId() + ".jpg" );
-            
-            FileCopy copier = new FileCopy();
-            try {
-                System.out.println("*********************************************************");
-                System.out.println("tempCover" + tempCover.toString());
-                System.out.println("finalCover" + finalCover.toString());
-                copier.copyFile(tempCover, finalCover);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (mCurrentPhotoPath != null) {
+                tempCover = new File(mCurrentPhotoPath);
 
+                //finalCover = File.createTempFile("__"+Long.toString(book.getId()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+                finalCover = new File(finalCoverDir);
+                //File finalCover = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + book.getId() + ".jpg" );
+
+                FileCopy copier = new FileCopy();
+                try {
+                    System.out.println("*********************************************************");
+                    System.out.println("tempCover" + tempCover.toString());
+                    System.out.println("finalCover" + finalCover.toString());
+                    copier.copyFile(tempCover, finalCover);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             startActivity(intent);
         }

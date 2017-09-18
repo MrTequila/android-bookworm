@@ -81,7 +81,7 @@ public class BookDetails extends AppCompatActivity {
         bookTitle.setText(title);
         startDate.setText(start);
         finishDate.setText(finish);
-        pagesNumber.setText(pages + " pages");
+        pagesNumber.setText(pages);
         if (readingDurationDays > 1){
             timeRead.setText(readingDuration + " days");
         } else {
