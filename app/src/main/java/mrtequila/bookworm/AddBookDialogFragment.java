@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 /**
  * Created by Michal on 2017-09-10.
@@ -72,7 +75,21 @@ public class AddBookDialogFragment extends DialogFragment {
                 //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
             }
         });
+
+        ImageButton button = (ImageButton)layoutView.findViewById(R.id.scanButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startBarCodeScan();
+            }
+        });
+
         return dialog;
+    }
+
+    public void startBarCodeScan(){
+        Intent intent = new Intent(getActivity().getApplicationContext(), BarCodeScannerActivity.class);
+        startActivity(intent);
     }
 
     public interface AddBookDialogListener {

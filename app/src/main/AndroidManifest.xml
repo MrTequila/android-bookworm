@@ -35,6 +35,8 @@
             android:label="Book Details"/>
         <activity android:name=".AddBookActivity"
             android:label="Add/Edit Book"/>
+        <activity android:name=".BarCodeScannerActivity"
+            android:label="Scan barcode"/>
         <activity
             android:name=".Main2Activity"
             android:label="Your Books"

@@ -266,8 +266,13 @@ public class AddBookActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
         builder.show();
+
     }
+
+
+
 
     String mCurrentPhotoPath;
 
