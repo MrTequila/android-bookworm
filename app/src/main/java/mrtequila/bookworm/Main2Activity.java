@@ -1,6 +1,7 @@
 package mrtequila.bookworm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +25,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,8 +39,10 @@ import com.android.volley.toolbox.Volley;
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddBookDialogFragment.AddBookDialogListener {
 
-    final static int  MY_REQUEST_CODE = 100;
-    final static int  MY_REQUEST_CODE_EXT_STORAGE = 100;
+    final static int MY_REQUEST_CODE = 100;
+    final static int MY_REQUEST_CODE_EXT_STORAGE = 101;
+    final static int MY_REQUEST_CODE_INTERNET = 102;
+    final static int MY_REQUEST_CODE_ACCESS_NETWORK_STATE = 103;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,16 @@ public class Main2Activity extends AppCompatActivity
 
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_REQUEST_CODE_EXT_STORAGE);
+            }
+            if(checkSelfPermission(Manifest.permission.INTERNET)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.INTERNET},
+                        MY_REQUEST_CODE_INTERNET);
+            }
+            if(checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.ACCESS_NETWORK_STATE},
+                        MY_REQUEST_CODE_ACCESS_NETWORK_STATE);
             }
         }
 
@@ -103,6 +119,24 @@ public class Main2Activity extends AppCompatActivity
                 // Like above
             }
         }
+        if (requestCode == MY_REQUEST_CODE_INTERNET) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+
+            }
+        }
+
+        if (requestCode == MY_REQUEST_CODE_ACCESS_NETWORK_STATE) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+
+            }
+        }
+
     }
 
 
@@ -208,11 +242,21 @@ public class Main2Activity extends AppCompatActivity
              }, new Response.ErrorListener() {
                  @Override
                  public void onErrorResponse(VolleyError error) {
+                     Toast errorToast = Toast.makeText(getApplicationContext(), "Didn't work !", Toast.LENGTH_SHORT);
+                     errorToast.show();
                      System.out.println("Didn't work !");
                  }
              });
+             stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
              queue.add(stringRequest);
          }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

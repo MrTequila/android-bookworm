@@ -19,6 +19,8 @@ import android.widget.ImageButton;
  */
 
 public class AddBookDialogFragment extends DialogFragment {
+    final static int BARCODE_SCAN_REQ_CODE = 10;
+    EditText isbnInput;
 
     @Override
     public Dialog onCreateDialog (Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class AddBookDialogFragment extends DialogFragment {
         final View layoutView = inflater.inflate(R.layout.dialog_add_book, null);
 
         builder.setView(layoutView);
-        final EditText isbnInput = (EditText) layoutView.findViewById(R.id.isbn);
+        isbnInput = (EditText) layoutView.findViewById(R.id.isbn);
 
 
         builder.setMessage("Search book by ISBN or add manually")
@@ -42,13 +44,7 @@ public class AddBookDialogFragment extends DialogFragment {
                 .setNegativeButton("Search book", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                   // System.out.println("**********************************************************************************************Isbn string: " + isbnString);
-                   // if(TextUtils.isEmpty(isbnString)){
 
-                   //     isbnInput.setError("Add ISBN number to search !");
-                   // } else {
-                    //    mListener.onDialogNegativeClick(AddBookDialogFragment.this);
-                  //  }
                     }
                 });
 
@@ -89,7 +85,16 @@ public class AddBookDialogFragment extends DialogFragment {
 
     public void startBarCodeScan(){
         Intent intent = new Intent(getActivity().getApplicationContext(), BarCodeScannerActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, BARCODE_SCAN_REQ_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if(requestCode == BARCODE_SCAN_REQ_CODE && resultCode == Activity.RESULT_OK){
+
+            System.out.println("++++++++++++++++++++++++++++ Fragment +++++++++++++++++++++++++++ " +data.getStringExtra("result"));
+            isbnInput.setText(data.getStringExtra("result"));
+        //}
     }
 
     public interface AddBookDialogListener {

@@ -1,6 +1,7 @@
 package mrtequila.bookworm;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.zxing.Result;
@@ -36,6 +37,10 @@ public class BarCodeScannerActivity extends Activity implements ZXingScannerView
 
     @Override
     public void handleResult(Result result) {
-        System.out.println(result);
+        Intent intent = new Intent(this, Main2Activity.class);
+        intent.putExtra("result", result.toString());
+        System.out.println("++++++++++++++++++++++++++++ Barcode +++++++++++++++++++++++++++ " + result.toString());
+        setResult(Activity.RESULT_OK, intent);
+        super.finish();
     }
 }
