@@ -21,8 +21,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,6 +66,7 @@ public class AddBookActivity extends AppCompatActivity {
         String finish = intent.getStringExtra("finishDate");
         String pages = intent.getStringExtra("pagesNumber");
         id = intent.getLongExtra("id", 0);
+        String coverLink = intent.getStringExtra("coverLink");
 
 
         bookAuthor.setText(author);
@@ -69,12 +79,42 @@ public class AddBookActivity extends AppCompatActivity {
         String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + id + ".jpg";
 
         finalCover = new File(finalCoverDir);
-        ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
+        final ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
         if (finalCover.exists()) {
             if (coverImage != null) {
                 coverImage.setImageURI(Uri.parse(finalCover.toString()));
-
             }
+        } else if (coverLink.length()>0){
+            RequestQueue imageQueue = Volley.newRequestQueue(this);
+            ImageRequest imageRequest = new ImageRequest(coverLink, new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    try {
+                        File imageFile = createImageFile();
+                        OutputStream stream = null;
+                        stream = new FileOutputStream(imageFile);
+                        response.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        stream.flush();
+                        stream.close();
+
+                        coverImage.setImageURI(Uri.parse(imageFile.getAbsolutePath()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast errorToast = Toast.makeText(getApplicationContext(), "Didn't work !", Toast.LENGTH_SHORT);
+                            errorToast.show();
+                            System.out.println("Didn't work !");
+                        }
+                    });
+            imageRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            imageQueue.add(imageRequest);
         }
 
         helper = new MySQLiteHelper(this);

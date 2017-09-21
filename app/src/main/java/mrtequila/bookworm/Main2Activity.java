@@ -232,12 +232,14 @@ public class Main2Activity extends AppCompatActivity
                      Intent intent = new Intent(getApplicationContext(), AddBookActivity.class);
                      intent.putExtra("bookAuthor", htmlParser.getAuthor());
                      intent.putExtra("bookTitle", htmlParser.getTitle());
+                     intent.putExtra("coverLink", htmlParser.getCoverLink());
 
                      startActivity(intent);
 
                      System.out.println(htmlParser.getAuthor());
                      System.out.println(htmlParser.getTitle());
                      System.out.println(htmlParser.getCoverLink());
+
                  }
              }, new Response.ErrorListener() {
                  @Override
