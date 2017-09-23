@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class AddBookActivity extends AppCompatActivity {
     private MySQLiteHelper helper;
     long id;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_GALLERY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,7 +305,12 @@ public class AddBookActivity extends AppCompatActivity {
                 .setNegativeButton("From Gallery", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent,
+                                "Select Picture"), REQUEST_IMAGE_GALLERY);
                     }
                 });
 
@@ -343,6 +350,26 @@ public class AddBookActivity extends AppCompatActivity {
             if (coverImage != null) {
                 //coverImage.setImageBitmap(imageBitmap);
                 coverImage.setImageURI(Uri.parse(mCurrentPhotoPath));
+            }
+        }
+        if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
+            ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
+            if (coverImage != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null){
+                    String[] projection = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImageUri,
+                            projection, null, null, null);
+                    System.out.println("1$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + cursor);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(projection[0]);
+                    System.out.println("2$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + columnIndex);
+                    mCurrentPhotoPath = cursor.getString(columnIndex);
+                    System.out.println("3$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + mCurrentPhotoPath);
+                    cursor.close();
+
+                }
+                coverImage.setImageURI(selectedImageUri);
             }
         }
     }
