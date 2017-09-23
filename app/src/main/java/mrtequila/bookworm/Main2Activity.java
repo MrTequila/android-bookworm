@@ -96,6 +96,7 @@ public class Main2Activity extends AppCompatActivity
         Fragment fragment = new BookListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
+        findViewById(R.id.searchProgressBar).setVisibility(View.INVISIBLE);
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
@@ -216,6 +217,8 @@ public class Main2Activity extends AppCompatActivity
              isbn.setError("Add ISBN number to search !");
          } else {
 
+             getCurrentFocus().getRootView().findViewById(R.id.searchProgressBar).setVisibility(View.VISIBLE);
+
              RequestQueue queue = Volley.newRequestQueue(this);
 
              String url = "https://www.justbooks.co.uk/search/?isbn=";
@@ -234,6 +237,8 @@ public class Main2Activity extends AppCompatActivity
                      intent.putExtra("bookTitle", htmlParser.getTitle());
                      intent.putExtra("coverLink", htmlParser.getCoverLink());
 
+                     getCurrentFocus().getRootView().findViewById(R.id.searchProgressBar).setVisibility(View.GONE);
+
                      startActivity(intent);
 
                      System.out.println(htmlParser.getAuthor());
@@ -244,6 +249,8 @@ public class Main2Activity extends AppCompatActivity
              }, new Response.ErrorListener() {
                  @Override
                  public void onErrorResponse(VolleyError error) {
+                     getCurrentFocus().getRootView().findViewById(R.id.searchProgressBar).setVisibility(View.GONE);
+
                      Toast errorToast = Toast.makeText(getApplicationContext(), "Didn't work !", Toast.LENGTH_SHORT);
                      errorToast.show();
                      System.out.println("Didn't work !");

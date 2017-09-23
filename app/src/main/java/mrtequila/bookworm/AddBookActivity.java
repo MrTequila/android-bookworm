@@ -84,7 +84,7 @@ public class AddBookActivity extends AppCompatActivity {
             if (coverImage != null) {
                 coverImage.setImageURI(Uri.parse(finalCover.toString()));
             }
-        } else if (coverLink.length()>0){
+        } else if (coverLink != null){
             RequestQueue imageQueue = Volley.newRequestQueue(this);
             ImageRequest imageRequest = new ImageRequest(coverLink, new Response.Listener<Bitmap>() {
                 @Override
