@@ -7,10 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +33,16 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -356,18 +363,16 @@ public class AddBookActivity extends AppCompatActivity {
             ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
             if (coverImage != null) {
                 Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null){
-                    String[] projection = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImageUri,
-                            projection, null, null, null);
-                    System.out.println("1$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + cursor);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(projection[0]);
-                    System.out.println("2$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + columnIndex);
-                    mCurrentPhotoPath = cursor.getString(columnIndex);
-                    System.out.println("3$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + mCurrentPhotoPath);
-                    cursor.close();
-
+                if (selectedImageUri != null){;
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                        File outputFile = createImageFile();
+                        OutputStream outputStream = new FileOutputStream(outputFile);
+                        FileCopy copier = new FileCopy();
+                        copier.copyFileStreams(inputStream, outputStream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 coverImage.setImageURI(selectedImageUri);
             }

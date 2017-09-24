@@ -18,8 +18,6 @@ public class FileCopy {
         OutputStream outputStream = null;
         try {
             inputStream = new FileInputStream(source);
-            System.out.println("*********************************************************"+ inputStream.toString());
-            System.out.println("***********************************************************"+ source.toString());
             outputStream = new FileOutputStream(destination);
             byte[] buffer = new byte[1024];
             int length;
@@ -30,5 +28,15 @@ public class FileCopy {
             inputStream.close();
             outputStream.close();
         }
+    }
+
+    public void copyFileStreams(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) > 0) {
+            outputStream.write(buffer, 0, length);
+        }
+        inputStream.close();
+        outputStream.close();
     }
 }
