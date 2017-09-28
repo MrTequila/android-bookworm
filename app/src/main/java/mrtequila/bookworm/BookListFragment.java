@@ -3,6 +3,7 @@ package mrtequila.bookworm;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class BookListFragment extends ListFragment {
     private BooksDataSource dataSource;
-    private static CustomAdapter adapter;
+    private CustomAdapter adapter;
     private MySQLiteHelper helper;
     boolean mDualPane;
     Context mContext;
@@ -22,7 +23,7 @@ public class BookListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         this.mContext = getContext();
 
-        helper = new MySQLiteHelper(getContext());
+        helper = new MySQLiteHelper(mContext);
         dataSource = new BooksDataSource(helper);
         dataSource.open();
 
@@ -34,6 +35,8 @@ public class BookListFragment extends ListFragment {
         View detailsFrame = getActivity().findViewById(R.id.list);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.show();
     }
 
     @Override

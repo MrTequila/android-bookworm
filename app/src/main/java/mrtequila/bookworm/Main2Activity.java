@@ -1,20 +1,16 @@
 package mrtequila.bookworm;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -187,6 +183,12 @@ public class Main2Activity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             // Handle the camera action
         } else if (id == R.id.nav_stats) {
+            Fragment fragment = new BookStatsFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
