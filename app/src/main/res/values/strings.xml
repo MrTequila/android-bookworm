@@ -11,4 +11,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string-array name="years">
+        <item>2016</item>
+        <item>2017</item>
+    </string-array>
 </resources>
