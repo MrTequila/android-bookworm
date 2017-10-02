@@ -5,15 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -33,18 +29,13 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 
 public class AddBookActivity extends AppCompatActivity {
@@ -53,6 +44,8 @@ public class AddBookActivity extends AppCompatActivity {
     long id;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_GALLERY = 2;
+    String mCurrentPhotoPath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +67,9 @@ public class AddBookActivity extends AppCompatActivity {
         String start = intent.getStringExtra("startDate");
         String finish = intent.getStringExtra("finishDate");
         String pages = intent.getStringExtra("pagesNumber");
-        id = intent.getLongExtra("id", 0);
         String coverLink = intent.getStringExtra("coverLink");
 
+        id = intent.getLongExtra("id", 0);
 
         bookAuthor.setText(author);
         bookTitle.setText(title);
@@ -130,10 +123,8 @@ public class AddBookActivity extends AppCompatActivity {
         dataSource = new BooksDataSource(helper);
         dataSource.open();
 
-        //List<Book> values = dataSource.getAllBooks();
-
-
     }
+
 
     @Override
     protected void onResume() {
@@ -141,11 +132,13 @@ public class AddBookActivity extends AppCompatActivity {
         super.onResume();
     }
 
+
     @Override
     protected void onPause() {
         dataSource.close();
         super.onPause();
     }
+
 
     /** Called when the user taps add button */
     public void addBook(View view) throws ParseException {
@@ -163,11 +156,6 @@ public class AddBookActivity extends AppCompatActivity {
         String strFinishDate =  finishDate.getText().toString();
         String strPagesNumber = pagesNumber.getText().toString();
 
-        intent.putExtra("bookAuthor", strBookAuthor);
-        intent.putExtra("bookTitle", strBookTitle);
-        intent.putExtra("startDate", strStartDate);
-        intent.putExtra("finishDate", strFinishDate);
-        intent.putExtra("pagesNumber", strPagesNumber);
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_LONG;
@@ -192,77 +180,60 @@ public class AddBookActivity extends AppCompatActivity {
             }
         }
 
+        isFieldEmpty(bookAuthor, "Add Book Author!", duration);
+        isFieldEmpty(bookTitle, "Add Book Title!", duration);
+        isFieldEmpty(startDate, "Add Starting Date!", duration);
+        isFieldEmpty(finishDate, "Add Finish Date!", duration);
+        isFieldEmpty(pagesNumber, "Add Number of Pages !", duration);
 
-        if (TextUtils.isEmpty(strBookAuthor)) {
-            CharSequence text = "Add Book Author !";
-            bookAuthor.setError(text);
-            Toast.makeText(context, text, duration).show();
-        }
-        if (TextUtils.isEmpty(strBookTitle)) {
-            CharSequence text = "Add Book Title !";
-            bookTitle.setError(text);
-            Toast.makeText(context, text, duration).show();
-        }
-        if (TextUtils.isEmpty(strStartDate)) {
-            CharSequence text = "Add Starting Date!";
-            startDate.setError(text);
-            Toast.makeText(context, text, duration).show();
-        }
-        if (TextUtils.isEmpty(strFinishDate)) {
-            CharSequence text = "Add Finish Date !";
-            finishDate.setError(text);
-            Toast.makeText(context, text, duration).show();
-        }
-        if (TextUtils.isEmpty(strPagesNumber)) {
-            CharSequence text = "Add Number of Pages !";
-            pagesNumber.setError(text);
-            Toast.makeText(context, text, duration).show();
-        }
-
-        if (!TextUtils.isEmpty(strBookAuthor)
-                && !TextUtils.isEmpty(strBookTitle)
-                && !TextUtils.isEmpty(strStartDate)
-                && !TextUtils.isEmpty(strFinishDate)
-                && !TextUtils.isEmpty(strPagesNumber)
-                && (dateStartDate.before(dateFinishDate) || dateStartDate.equals(dateFinishDate)) ) {
+        if (   !TextUtils.isEmpty(strBookAuthor)
+            && !TextUtils.isEmpty(strBookTitle)
+            && !TextUtils.isEmpty(strStartDate)
+            && !TextUtils.isEmpty(strFinishDate)
+            && !TextUtils.isEmpty(strPagesNumber)
+            && (dateStartDate.before(dateFinishDate) || dateStartDate.equals(dateFinishDate)) ) {
 
             // Open db and add book
             helper = new MySQLiteHelper(this);
             dataSource = new BooksDataSource(helper);
             dataSource.open();
             Book book;
+
             if (id==0){
-                book = dataSource.createBook(strBookAuthor, strBookTitle, strStartDate, strFinishDate, Integer.parseInt(strPagesNumber));
+                book = dataSource.createBook(strBookAuthor, strBookTitle, strStartDate,
+                        strFinishDate, Integer.parseInt(strPagesNumber));
             } else {
                 int bookPages = dataSource.getBook(id).getPageNumber();
-                book = dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate, strFinishDate, bookPages);
+                book = dataSource.updateBook(id, strBookAuthor, strBookTitle, strStartDate,
+                        strFinishDate, bookPages);
             }
 
             File tempCover = null;
             File finalCover = null;
-            String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + book.getId() + ".jpg";
-            //tempCover = File.createTempFile("temp", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+            String finalCoverDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                    .getAbsolutePath() + book.getId() + ".jpg";
+
             if (mCurrentPhotoPath != null) {
                 tempCover = new File(mCurrentPhotoPath);
-
-                //finalCover = File.createTempFile("__"+Long.toString(book.getId()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
                 finalCover = new File(finalCoverDir);
-                //File finalCover = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + book.getId() + ".jpg" );
-
                 FileCopy copier = new FileCopy();
                 try {
-                    System.out.println("*********************************************************");
-                    System.out.println("tempCover" + tempCover.toString());
-                    System.out.println("finalCover" + finalCover.toString());
                     copier.copyFile(tempCover, finalCover);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
+            intent.putExtra("bookAuthor", strBookAuthor);
+            intent.putExtra("bookTitle", strBookTitle);
+            intent.putExtra("startDate", strStartDate);
+            intent.putExtra("finishDate", strFinishDate);
+            intent.putExtra("pagesNumber", strPagesNumber);
+
             startActivity(intent);
         }
     }
+
 
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
@@ -282,6 +253,7 @@ public class AddBookActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
 
     }
+
 
     public void addImageDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -312,7 +284,6 @@ public class AddBookActivity extends AppCompatActivity {
                 .setNegativeButton("From Gallery", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //dialog.dismiss();
                         Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -326,14 +297,8 @@ public class AddBookActivity extends AppCompatActivity {
     }
 
 
-
-
-    String mCurrentPhotoPath;
-
     private File createImageFile() throws IOException {
         // Create an image file name
-        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        //String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 "temp",  /* prefix */
@@ -341,12 +306,11 @@ public class AddBookActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
 
-
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++" + mCurrentPhotoPath);
         return image;
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -363,7 +327,7 @@ public class AddBookActivity extends AppCompatActivity {
             ImageView coverImage = (ImageView) findViewById(R.id.book_cover);
             if (coverImage != null) {
                 Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null){;
+                if (selectedImageUri != null){
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                         File outputFile = createImageFile();
@@ -389,5 +353,13 @@ public class AddBookActivity extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    public void isFieldEmpty (EditText textField, String error, int duration){
+        if (TextUtils.isEmpty(textField.getText().toString())) {
+            textField.setError(error);
+            Toast.makeText(getApplicationContext(), error, duration).show();
+        }
+    }
+
 }
 
