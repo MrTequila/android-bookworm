@@ -21,6 +21,19 @@ public class StatisticsHelper {
         this.dataSource = dataSource;
     }
 
+    public ArrayList<String> getAvailableYears() {
+        final ArrayList<Book> booksList = dataSource.getAllBooksArray();
+        ArrayList<String> yearList = new ArrayList<>();
+
+        for (Book book:booksList){
+            String yearFinished = book.getFinishYear();
+            if (!yearList.contains(yearFinished))
+                yearList.add(yearFinished);
+        }
+
+        return yearList;
+    }
+
     public ArrayList<BarEntry> getPagesReadPerMonth (int year){
         final ArrayList<Book> booksList = dataSource.getAllBooksArray();
 
@@ -31,33 +44,13 @@ public class StatisticsHelper {
         ArrayList<BarEntry> chartEntry = new ArrayList<>();
 
         for (Book book:booksList){
-            String finish = book.getFinishDate();
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date dateFinishDate = null;
-
-            Calendar finishDateCalendar = Calendar.getInstance();
-
-            // try to parse start and finish date from fields - if not empty
-            // to check if start date is before finish date
-            try {
-                dateFinishDate = simpleDateFormat.parse(finish);
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            finishDateCalendar.setTime(dateFinishDate);
-
-
-            String yearFinished = new SimpleDateFormat("yyyy").format(dateFinishDate);
+            String yearFinished = book.getFinishYear();
             int yearFinishedInt = Integer.parseInt(yearFinished);
 
             if(yearFinishedInt == year){
 
                 int pagesRead = book.getPageNumber();
-                String monthFinished = new SimpleDateFormat("MM").format(dateFinishDate);
+                String monthFinished = book.getFinishMonth();
                 int monthFinishedInt = Integer.parseInt(monthFinished);
 
                 if (chartData.containsKey(monthFinishedInt)){

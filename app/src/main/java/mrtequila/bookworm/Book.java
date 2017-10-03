@@ -1,5 +1,10 @@
 package mrtequila.bookworm;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Michal on 2017-04-04.
  */
@@ -59,6 +64,46 @@ public class Book {
 
     public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public String getFinishYear() {
+        String finish = this.getFinishDate();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFinishDate = null;
+
+        Calendar finishDateCalendar = Calendar.getInstance();
+
+        try {
+            dateFinishDate = simpleDateFormat.parse(finish);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        finishDateCalendar.setTime(dateFinishDate);
+
+        String yearFinished = new SimpleDateFormat("yyyy").format(dateFinishDate);
+        return yearFinished;
+    }
+
+    public String getFinishMonth() {
+        String finish = this.getFinishDate();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFinishDate = null;
+
+        Calendar finishDateCalendar = Calendar.getInstance();
+
+        try {
+            dateFinishDate = simpleDateFormat.parse(finish);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        finishDateCalendar.setTime(dateFinishDate);
+
+        String monthFinished = new SimpleDateFormat("MM").format(dateFinishDate);
+        return monthFinished;
     }
 
     public int getPageNumber() {

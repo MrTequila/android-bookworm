@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -15,24 +16,17 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Michal on 2017-09-28.
  */
 
-public class BookStatsFragment extends android.support.v4.app.Fragment {
+public class BookStatsFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemSelectedListener {
     Context mContext;
-    private CustomAdapter adapter;
     private MySQLiteHelper helper;
     private BooksDataSource dataSource;
+    private ArrayList<String> availableYears;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,19 +46,24 @@ public class BookStatsFragment extends android.support.v4.app.Fragment {
     public void onActivityCreated(Bundle savedInstance) {
         super.onActivityCreated(savedInstance);
         this.mContext = getActivity().getApplicationContext();
-
         helper = new MySQLiteHelper(mContext);
         dataSource = new BooksDataSource(helper);
         dataSource.open();
+        StatisticsHelper statisticsHelper = new StatisticsHelper(dataSource);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
+
+        availableYears = statisticsHelper.getAvailableYears();
 
         Spinner yearSpinner = (Spinner) getActivity().findViewById(R.id.year_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.years, android.R.layout.simple_spinner_item);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.years, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, availableYears);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
+        yearSpinner.setOnItemSelectedListener(this);
 
         int yearStat = 2017;
-
-        StatisticsHelper statisticsHelper = new StatisticsHelper(dataSource);
 
         ArrayList<BarEntry> chartEntry = statisticsHelper.getPagesReadPerMonth(yearStat);
 
@@ -73,15 +72,36 @@ public class BookStatsFragment extends android.support.v4.app.Fragment {
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.9f);
 
+        BarChart barChart = (BarChart) getView().findViewById(R.id.pages_chart);
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.hide();
+        barChart.setData(barData);
+        barChart.setFitBars(true);
+        barChart.invalidate();
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        System.out.println("position: " + position);
+        StatisticsHelper statisticsHelper = new StatisticsHelper(dataSource);
+        int yearStat = Integer.parseInt(availableYears.get(position));
+        ArrayList<BarEntry> chartEntry = statisticsHelper.getPagesReadPerMonth(yearStat);
+
+        BarDataSet dataSet = new BarDataSet(chartEntry, "pages read");
+
+        BarData barData = new BarData(dataSet);
+        barData.setBarWidth(0.9f);
 
         BarChart barChart = (BarChart) getView().findViewById(R.id.pages_chart);
 
         barChart.setData(barData);
         barChart.setFitBars(true);
         barChart.invalidate();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
