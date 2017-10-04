@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -72,8 +74,21 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.9f);
 
+
         BarChart barChart = (BarChart) getView().findViewById(R.id.pages_chart);
 
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(12, true);
+
+        YAxis yAxisRight = barChart.getAxisRight();
+        yAxisRight.setEnabled(false);
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setAxisMinimum(0f);
+
+
+        barChart.getDescription().setEnabled(false);
         barChart.setData(barData);
         barChart.setFitBars(true);
         barChart.invalidate();
