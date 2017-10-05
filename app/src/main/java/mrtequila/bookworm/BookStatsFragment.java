@@ -13,7 +13,6 @@ import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -59,7 +58,6 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         availableYears = statisticsHelper.getAvailableYears();
 
         Spinner yearSpinner = (Spinner) getActivity().findViewById(R.id.year_spinner);
-        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.years, android.R.layout.simple_spinner_item);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, availableYears);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter);
@@ -72,26 +70,7 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         BarDataSet dataSet = new BarDataSet(chartEntry, "pages read");
 
         BarData barData = new BarData(dataSet);
-        barData.setBarWidth(0.9f);
-
-
-        BarChart barChart = (BarChart) getView().findViewById(R.id.pages_chart);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(12, true);
-
-        YAxis yAxisRight = barChart.getAxisRight();
-        yAxisRight.setEnabled(false);
-
-        YAxis yAxis = barChart.getAxisLeft();
-        yAxis.setAxisMinimum(0f);
-
-
-        barChart.getDescription().setEnabled(false);
-        barChart.setData(barData);
-        barChart.setFitBars(true);
-        barChart.invalidate();
+        buildBarChart(barData);
 
     }
 
@@ -106,17 +85,26 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         BarDataSet dataSet = new BarDataSet(chartEntry, "pages read");
 
         BarData barData = new BarData(dataSet);
-        barData.setBarWidth(0.9f);
-
-        BarChart barChart = (BarChart) getView().findViewById(R.id.pages_chart);
-
-        barChart.setData(barData);
-        barChart.setFitBars(true);
-        barChart.invalidate();
+        buildBarChart(barData);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void buildBarChart(BarData barData) {
+        barData.setBarWidth(0.9f);
+
+        ChartBuilder builder = new ChartBuilder((BarChart) getView().findViewById(R.id.pages_chart));
+        BarChart barChart = builder.setChartData(barData)
+                .setXAxisPos(XAxis.XAxisPosition.BOTTOM)
+                .setYAxisEnabled(false, builder.Y_AXIS_SIDE_RIGHT)
+                .setYAxisMinimum(0f, builder.Y_AXIS_SIDE_LEFT)
+                .setDescriptionEnabled(false)
+                .setFitBars(true)
+                .createBarChart();
+
+        barChart.invalidate();
     }
 }
