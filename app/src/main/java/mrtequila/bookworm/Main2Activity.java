@@ -39,6 +39,10 @@ public class Main2Activity extends AppCompatActivity
     final static int MY_REQUEST_CODE_EXT_STORAGE = 101;
     final static int MY_REQUEST_CODE_INTERNET = 102;
     final static int MY_REQUEST_CODE_ACCESS_NETWORK_STATE = 103;
+    private int id = R.id.nav_book_list;
+    private final static String STATE_ID = "fragmentId";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +79,6 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //openAddBook(view);
                 showAddBookDialog();
             }
         });
@@ -88,12 +91,28 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Fragment fragment = new BookListFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
         findViewById(R.id.searchProgressBar).setVisibility(View.INVISIBLE);
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if(savedInstanceState != null){
+            this.id = savedInstanceState.getInt(STATE_ID);
+        }
+
+        if(this.id == R.id.nav_book_list){
+            Fragment fragment = new BookListFragment();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        } else if(this.id == R.id.nav_stats){
+            Fragment fragment = new BookStatsFragment();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putInt(STATE_ID, this.id);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -136,8 +155,6 @@ public class Main2Activity extends AppCompatActivity
 
     }
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -174,21 +191,18 @@ public class Main2Activity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+       this.id = item.getItemId();
 
         if (id == R.id.nav_book_list) {
             Fragment fragment = new BookListFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-            // Handle the camera action
         } else if (id == R.id.nav_stats) {
             Fragment fragment = new BookStatsFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -40,6 +40,7 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         View rootView = inflater.inflate(R.layout.fragment_book_stats, container, false);
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        setRetainInstance(true);
         return rootView;
     }
 
