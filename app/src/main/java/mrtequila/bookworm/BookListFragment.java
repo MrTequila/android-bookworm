@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-
+//@TODO Solve issue with Cover images mix after book deletion
 public class BookListFragment extends ListFragment {
     private BooksDataSource dataSource;
     private CustomAdapter adapter;
@@ -25,7 +25,6 @@ public class BookListFragment extends ListFragment {
 
         helper = new MySQLiteHelper(mContext);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
 
         final ArrayList<Book> values = dataSource.getAllBooksArray();
         adapter = new CustomAdapter(values, getContext());

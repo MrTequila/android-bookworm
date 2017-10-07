@@ -20,7 +20,6 @@ public class BookList2 extends AppCompatActivity {
 
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
         listView = (ListView) findViewById(R.id.list);
 
         final ArrayList<Book> values = dataSource.getAllBooksArray();

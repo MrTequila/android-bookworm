@@ -121,14 +121,12 @@ public class AddBookActivity extends AppCompatActivity {
 
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
 
     }
 
 
     @Override
     protected void onResume() {
-        dataSource.open();
         super.onResume();
     }
 
@@ -196,7 +194,6 @@ public class AddBookActivity extends AppCompatActivity {
             // Open db and add book
             helper = new MySQLiteHelper(this);
             dataSource = new BooksDataSource(helper);
-            dataSource.open();
             Book book;
 
             if (id==0){

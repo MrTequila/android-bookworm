@@ -50,7 +50,6 @@ public class BookStatsFragment extends android.support.v4.app.Fragment implement
         this.mContext = getActivity().getApplicationContext();
         helper = new MySQLiteHelper(mContext);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
         StatisticsHelper statisticsHelper = new StatisticsHelper(dataSource);
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);

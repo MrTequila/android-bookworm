@@ -154,10 +154,9 @@ public class BookDetails extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
                             MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(getApplicationContext());
                             BooksDataSource source = new BooksDataSource(mySQLiteHelper);
-                            source.open();
+
                             Book bookToDelete =  source.getBook(id);
                             source.deleteBook(bookToDelete);
-                            source.close();
 
                             startActivity(intent);
                         }

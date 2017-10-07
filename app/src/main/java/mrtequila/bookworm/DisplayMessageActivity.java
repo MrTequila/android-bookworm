@@ -17,7 +17,6 @@ public class DisplayMessageActivity extends AppCompatActivity {
         // Open db
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();

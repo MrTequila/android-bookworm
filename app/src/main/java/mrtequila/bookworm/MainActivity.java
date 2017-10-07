@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
 
         List<Book> values = dataSource.getAllBooks();
 
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        dataSource.open();
         super.onResume();
     }
 

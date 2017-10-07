@@ -18,7 +18,6 @@ public class BookList extends ListActivity {
 
         helper = new MySQLiteHelper(this);
         dataSource = new BooksDataSource(helper);
-        dataSource.open();
 
         List<Book> values = dataSource.getAllBooks();
 
@@ -33,7 +32,6 @@ public class BookList extends ListActivity {
 
     @Override
     protected void onResume() {
-        dataSource.open();
         List<Book> values = dataSource.getAllBooks();
         ArrayAdapter<Book> adapter = new ArrayAdapter<Book>(this,
                 R.layout.activity_book_list, R.id.textview, values);

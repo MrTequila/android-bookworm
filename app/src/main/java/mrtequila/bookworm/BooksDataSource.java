@@ -28,30 +28,39 @@ public class BooksDataSource {
     }
 
     public void deleteDB() {
+        this.open();
         dbHelper.deleteDB();
+        this.close();
     }
 
     public Book createBook(String author, String title, String startDate,
                            String finishDate, int pageNumber) {
-
-        return dbHelper.createBook(author, title, startDate, finishDate, pageNumber);
+        this.open();
+        Book book = dbHelper.createBook(author, title, startDate, finishDate, pageNumber);
+        this.close();
+        return book;
     }
 
     public Book updateBook(long id, String author, String title, String startDate,
                            String finishDate, int pageNumber){
-        return dbHelper.updateBook(id, author, title, startDate, finishDate, pageNumber);
+        this.open();
+        Book book = dbHelper.updateBook(id, author, title, startDate, finishDate, pageNumber);
+        this.close();
+        return book;
     }
 
     public void deleteBook(Book book) {
-
         long id = book.getId();
+        this.open();
         dbHelper.deleteBook(id);
+        this.close();
     }
 
     public List<Book> getAllBooks() {
         List<Book> books;
-
+        this.open();
         books = dbHelper.getAllBooks();
+        this.close();
         return books;
 
     }
@@ -59,13 +68,19 @@ public class BooksDataSource {
     public ArrayList<Book> getAllBooksArray() {
         ArrayList<Book> books;
 
+        this.open();
         books = dbHelper.getAllBooksArray();
+        this.close();
+
         return books;
 
     }
 
     public Book getBook(long id){
-        return dbHelper.getBook(id);
+        this.open();
+        Book book = dbHelper.getBook(id);
+        this.close();
+        return book;
     }
 
 }
